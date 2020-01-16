@@ -5,23 +5,15 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
-  try {
-    const users = await User.find({ _id: "aa" })
-      .sort("name")
-      .select("-password");
-    res.send(users);
-  } catch (ex) {
-    next(ex);
-  }
+  const users = await User.find({ _id: "aa" })
+    .sort("name")
+    .select("-password");
+  res.send(users);
 });
 
 router.get("/current", auth, async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user._id).select("-password");
-    res.send(user);
-  } catch (ex) {
-    next(ex);
-  }
+  const user = await User.findById(req.user._id).select("-password");
+  res.send(user);
 });
 
 router.post("/", async (req, res) => {
