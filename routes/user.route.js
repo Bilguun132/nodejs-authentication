@@ -4,9 +4,24 @@ const { User, validate } = require("../models/user.model");
 const express = require("express");
 const router = express.Router();
 
-router.get("/current", auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
-  res.send(user);
+router.get("/", async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: "aa" })
+      .sort("name")
+      .select("-password");
+    res.send(users);
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.get("/current", auth, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    res.send(user);
+  } catch (ex) {
+    next(ex);
+  }
 });
 
 router.post("/", async (req, res) => {
